@@ -21,50 +21,9 @@ type Task = {
 };
 
 app.get("/board", function (_req, res) {
-  const columns: Array<Column> = [
-    {
-      name: "To Do",
-      tasks: [
-        {
-          name: "Task 1",
-        },
-        {
-          name: "Task 2",
-        },
-        {
-          name: "Task 3",
-        },
-      ],
-    },
-    {
-      name: "Doing",
-      tasks: [
-        {
-          name: "In progress...",
-        },
-      ],
-    },
-    {
-      name: "Done",
-      tasks: [
-        {
-          name: "Finished this one",
-        },
-        {
-          name: "And this one",
-        },
-        {
-          name: "Crikey,",
-        },
-        {
-          name: "Wasn't I...",
-        },
-        {
-          name: "Productive!",
-        },
-      ],
-    },
-  ];
+  const columns: Array<Column> = JSON.parse(
+    Deno.readTextFileSync("database.json"),
+  );
 
   res.render("pages/board", { columns });
 });
