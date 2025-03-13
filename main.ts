@@ -28,11 +28,11 @@ app.get("/board", function (_req, res) {
   res.render("pages/board", { columns });
 });
 
-app.get("/create", function (_req, res) {
+app.get("/tasks/new", function (_req, res) {
   res.render("pages/create");
 });
 
-app.post("/create", function (req, res) {
+app.post("/tasks", function (req, res) {
   const data = req.body;
   console.log(data);
 });
