@@ -20,10 +20,18 @@ type Task = {
   name: string;
 };
 
-app.get("/board", function (_req, res) {
-  const columns: Array<Column> = JSON.parse(
+function readDatabase() {
+  return JSON.parse(
     Deno.readTextFileSync("database.json"),
   );
+}
+
+function writeDatabase(columns: Array<Column>) {
+  Deno.writeTextFileSync("database.json", JSON.stringify(columns));
+}
+
+app.get("/board", function (_req, res) {
+  const columns: Array<Column> = readDatabase();
 
   res.render("pages/board", { columns });
 });
@@ -33,8 +41,10 @@ app.get("/tasks/new", function (_req, res) {
 });
 
 app.post("/tasks", function (req, res) {
-  const data = req.body;
-  console.log(data);
+  const columns: Array<Column> = readDatabase();
+  columns[0].tasks.push({ name: req.body.taskName });
+  writeDatabase(columns);
+  res.redirect("/board");
 });
 
 const port = Deno.env.get("PORT") || 8080;
